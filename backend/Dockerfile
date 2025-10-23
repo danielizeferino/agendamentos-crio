@@ -1,22 +1,30 @@
-FROM node:18-alpine
-
+# ---------- BUILD ----------
+FROM node:18-alpine AS build
 WORKDIR /app
 
-# Dependências
 COPY package*.json ./
 RUN npm ci
 
-# Prisma schema e código
-COPY prisma ./prisma
-RUN npx prisma generate
-
 COPY . .
 
-# Compila TypeScript -> dist
+# Gera Prisma Client ANTES do build
+RUN npx prisma generate
+
+# Compila o backend
 RUN npm run build
 
-# Porta
+# ---------- RUNTIME ----------
+FROM node:18-alpine
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV PORT=3001
+
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/prisma ./prisma
+COPY --from=build /app/package*.json ./
+
 EXPOSE 3001
 
-# Ao subir o container: aplica migrações e inicia API
 CMD ["sh", "-c", "npx prisma migrate deploy && node dist/server.js"]

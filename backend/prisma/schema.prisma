@@ -1,42 +1,28 @@
-// backend/prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
-}
-
-model User {
-  id        String    @id @default(uuid())
-  name      String
-  email     String    @unique
-  whatsapp  String?
-  createdAt DateTime  @default(now())
-  bookings  Booking[]
-}
-
 model Room {
-  id        String   @id            // "alfa" | "beta" | ...
+  id        String   @id @default(cuid())
   name      String
-  block     String?
-  capacity  Int?
-  features  String?                 // simples: CSV (ex: "TV,Whiteboard")
-  bookings  Booking[]
+  block     String
+  capacity  Int
+  features  String?
+  slots     Slot[]
 }
 
-model Booking {
-  id        String   @id @default(uuid())
+model Slot {
+  id        String   @id @default(cuid())
   title     String
   start     DateTime
   end       DateTime
+  userEmail String
   roomId    String
-  userId    String?
-  createdAt DateTime @default(now())
-
   room      Room     @relation(fields: [roomId], references: [id])
-  user      User?    @relation(fields: [userId], references: [id])
-
-  @@index([roomId, start, end])
+  createdAt DateTime @default(now())
 }

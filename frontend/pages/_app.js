@@ -1,9 +1,5 @@
 // pages/_app.js
-//import '@fullcalendar/core/index.css';
-//import '@fullcalendar/daygrid/index.css';
-//import '@fullcalendar/timegrid/index.css';
-
-import '../styles/globals.css';
+import "../styles/globals.css"; // mantém o seu CSS global
 
 export default function App({ Component, pageProps }) {
   return <Component {...pageProps} />;
