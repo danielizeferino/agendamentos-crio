@@ -35,13 +35,6 @@ docker compose up --build
 
 ---
 
-## 🪟 Preview do Sistema
-
-### 🔐 Tela de Login  
-[![Tela de Login](./frontend/public/preview-login.png)](https://raw.githubusercontent.com/danielizeferino/agendamentos-crio/refs/heads/main/frontend/public/Captura%20de%20tela%202025-10-23%20132537.png)
-
-### 📅 Tela de Agendamento  
-![Tela de Agendamento](./frontend/public/preview-calendar.png)
 
 ---
 
